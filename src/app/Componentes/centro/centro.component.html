@@ -1,0 +1,243 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>Centros</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col" *ngIf="!editingCenter && !creatingCenter">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Dirección</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Imagen</th>
+            <th scope="col">
+              <button class="btn btn-primary" (click)="crearCentro()">
+                <i class="fa-solid fa-circle-plus"></i>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="centros.length == 0">
+            <td colspan="7">No existen centros.</td>
+          </tr>
+          <tr *ngFor="let centro of centros">
+            <td>{{ centro.id }}</td>
+            <td>{{ centro.nombre }}</td>
+            <td>{{ centro.descripcion }}</td>
+            <td>{{ centro.direccion }}</td>
+            <td>{{ centro.telefono }}</td>
+            <td>{{ centro.imagen }}</td>
+            <td>
+              <button class="btn btn-primary" (click)="editarCentro(centro)">
+                <i class="fa-solid fa-pen"></i></button
+              >&nbsp;&nbsp;|&nbsp;&nbsp;<button
+                class="btn btn-primary"
+                (click)="eliminarCentro(centro.id)"
+              >
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col" *ngIf="editingCenter || creatingCenter">
+      <div class="container">
+        <div class="row">
+          <div class="col text-end">
+            <button class="btn btn-primary" (click)="volverListado()">
+              <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Volver al
+              listado
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <form [formGroup]="centroForm" (ngSubmit)="guardarCentro()">
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre:</label>
+                <input
+                  type="text"
+                  [formControl]="nombre"
+                  class="form-control"
+                  id="nombre"
+                />
+
+                <div *ngIf="nombre.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="nombre.errors && (nombre.touched || nombre.dirty)"
+                  >
+                    <span
+                      *ngIf="
+                        nombre.errors &&
+                        (nombre.touched || nombre.dirty) &&
+                        nombre.errors['required']
+                      "
+                      >Nombre es requerido</span
+                    >
+                    <span
+                      *ngIf="
+                        nombre.errors &&
+                        (nombre.touched || nombre.dirty) &&
+                        nombre.errors['minlength']
+                      "
+                      >El nombre no puede ser inferior a 3 caracteres</span
+                    >
+                    <span
+                      *ngIf="
+                        nombre.errors &&
+                        (nombre.touched || nombre.dirty) &&
+                        nombre.errors['maxlength']
+                      "
+                      >El nombre no puede ser mayor a 16 caracteres</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción:</label>
+                <input
+                  type="text"
+                  [formControl]="descripcion"
+                  class="form-control"
+                  id="descripcion"
+                />
+
+                <div *ngIf="descripcion.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="
+                      descripcion.errors &&
+                      (descripcion.touched || descripcion.dirty)
+                    "
+                  >
+                    <span
+                      *ngIf="
+                        descripcion.errors &&
+                        (descripcion.touched || descripcion.dirty) &&
+                        descripcion.errors['required']
+                      "
+                      >Descripción es requerida</span
+                    >
+                    <span
+                      *ngIf="
+                        descripcion.errors &&
+                        (descripcion.touched || descripcion.dirty) &&
+                        descripcion.errors['maxlength']
+                      "
+                      >La descripción no puede ser mayor de 512 caracteres</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="direccion" class="form-label">Dirección:</label>
+                <input
+                  type="text"
+                  [formControl]="direccion"
+                  class="form-control"
+                  id="direccion"
+                />
+
+                <div *ngIf="direccion.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="
+                      direccion.errors && (direccion.touched || direccion.dirty)
+                    "
+                  >
+                    <span
+                      *ngIf="
+                        direccion.errors &&
+                        (direccion.touched || direccion.dirty) &&
+                        direccion.errors['required']
+                      "
+                      >Dirección es requerida</span
+                    >
+                    <span
+                      *ngIf="
+                        direccion.errors &&
+                        (direccion.touched || direccion.dirty) &&
+                        direccion.errors['maxlength']
+                      "
+                      >La dirección no puede ser mayor de 255 caracteres</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="telefono" class="form-label">Teléfono:</label>
+                <input
+                  type="number"
+                  [formControl]="telefono"
+                  class="form-control"
+                  id="telefono"
+                />
+                <div *ngIf="telefono.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="
+                      telefono.errors && (telefono.touched || telefono.dirty)
+                    "
+                  >
+                    <span
+                      *ngIf="
+                        telefono.errors &&
+                        (telefono.touched || telefono.dirty) &&
+                        telefono.errors['required']
+                      "
+                      >Teléfono es requerido</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="imagen" class="form-label"
+                  >Dirección de la imagen:</label
+                >
+                <input
+                  type="text"
+                  [formControl]="imagen"
+                  class="form-control"
+                  id="imagen"
+                />
+                <div *ngIf="imagen.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="imagen.errors && (imagen.touched || imagen.dirty)"
+                  >
+                    <span
+                      *ngIf="
+                        imagen.errors &&
+                        (imagen.touched || imagen.dirty) &&
+                        imagen.errors['required']
+                      "
+                      >Imagen es requerida</span
+                    >
+                    <span
+                      *ngIf="
+                        imagen.errors &&
+                        (imagen.touched || imagen.dirty) &&
+                        imagen.errors['maxlength']
+                      "
+                      >La dirección de imagen no puede ser mayor de 255
+                      caracteres</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

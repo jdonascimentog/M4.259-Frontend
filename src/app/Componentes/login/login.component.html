@@ -1,0 +1,76 @@
+<h1>Acceder</h1>
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+  <div class="mb-3">
+    <label for="email" class="form-label">Email: </label>
+    <input type="email" [formControl]="email" class="form-control" id="email" />
+    <div *ngIf="email.errors" class="mb-3">
+      <span
+        style="color: red"
+        *ngIf="email.errors && (email.touched || email.dirty)"
+      >
+        <span
+          *ngIf="
+            email.errors &&
+            (email.touched || email.dirty) &&
+            email.errors['required']
+          "
+          >Email es requerido</span
+        >
+        <span
+          *ngIf="
+            email.errors &&
+            (email.touched || email.dirty) &&
+            email.errors['pattern']
+          "
+        >
+          El email no tiene el formato correcto.
+        </span>
+      </span>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="password" class="form-label">Contraseña: </label>
+    <input
+      type="password"
+      [formControl]="password"
+      class="form-control"
+      id="password"
+    />
+    <div *ngIf="password.errors" class="mb-3">
+      <span
+        style="color: red"
+        *ngIf="password.errors && (password.touched || password.dirty)"
+      >
+        <span
+          *ngIf="
+            password.errors &&
+            (password.touched || password.dirty) &&
+            password.errors['required']
+          "
+          >Contraseña es requerida</span
+        >
+        <span
+          *ngIf="
+            password.errors &&
+            (password.touched || password.dirty) &&
+            password.errors['minlength']
+          "
+          >La contraseña no debe ser menor de 8 caracteres</span
+        >
+        <span
+          *ngIf="
+            password.errors &&
+            (password.touched || password.dirty) &&
+            password.errors['maxlength']
+          "
+          >La contraseña no puede ser mayor de 16 caracteres</span
+        >
+      </span>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary">
+    Acceder
+  </button>
+</form>

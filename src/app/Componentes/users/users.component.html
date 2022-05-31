@@ -1,0 +1,202 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>Usuarios</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col" *ngIf="!editingUser && !creatingUser">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Login</th>
+            <th scope="col">Email</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">
+              <button class="btn btn-primary" (click)="crearUsuario()">
+                <i class="fa-solid fa-circle-plus"></i>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="users.length == 0">
+            <td colspan="5">No existen usuarios.</td>
+          </tr>
+          <tr *ngFor="let user of users">
+            <td>{{ user.id }}</td>
+            <td>{{ user.login }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.telefono }}</td>
+            <td>
+              <button class="btn btn-primary" (click)="editarUsuario(user)">
+                <i class="fa-solid fa-pen"></i></button
+              >&nbsp;&nbsp;|&nbsp;&nbsp;<button
+                class="btn btn-primary"
+                (click)="eliminarUsuario(user.id)"
+              >
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col" *ngIf="editingUser || creatingUser">
+      <div class="container">
+        <div class="row">
+          <div class="col text-end">
+            <button class="btn btn-primary" (click)="volverListado()">
+              <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Volver al
+              listado
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <form [formGroup]="userForm" (ngSubmit)="guardarUsuario()">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input
+                  type="email"
+                  [formControl]="email"
+                  class="form-control"
+                  id="email"
+                  aria-describedby="emailHelp"
+                />
+                <div id="emailHelp" class="form-text">
+                  Nunca utilizaremos esta dirección de correo fuera de la
+                  plataforma.
+                </div>
+                <div *ngIf="email.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="email.errors && (email.touched || email.dirty)"
+                  >
+                    <span
+                      *ngIf="
+                        email.errors &&
+                        (email.touched || email.dirty) &&
+                        email.errors['required']
+                      "
+                      >Email es requerido</span
+                    >
+                    <div
+                      *ngIf="
+                        email.errors &&
+                        (email.touched || email.dirty) &&
+                        email.errors['pattern']
+                      "
+                    >
+                      El email no tiene el formato correcto.
+                    </div>
+                  </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="telefono" class="form-label">Teléfono:</label>
+                <input
+                  type="number"
+                  [formControl]="telefono"
+                  class="form-control"
+                  id="telefono"
+                />
+                <div *ngIf="telefono.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="
+                      telefono.errors && (telefono.touched || telefono.dirty)
+                    "
+                  >
+                    <span
+                      *ngIf="
+                        telefono.errors &&
+                        (telefono.touched || telefono.dirty) &&
+                        telefono.errors['required']
+                      "
+                      >Teléfono es requerido</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="login" class="form-label">Login</label>
+                <input type="login" class="form-control" id="login" />
+                <div *ngIf="login.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="login.errors && (login.touched || login.dirty)"
+                  >
+                    <span
+                      *ngIf="
+                        login.errors &&
+                        (login.touched || login.dirty) &&
+                        login.errors['required']
+                      "
+                      >Login es requerido</span
+                    >
+                    <span
+                      *ngIf="
+                        login.errors &&
+                        (login.touched || login.dirty) &&
+                        login.errors['minlength']
+                      "
+                      >El login no debe ser menor de 8 caracteres</span
+                    >
+                    <span
+                      *ngIf="
+                        login.errors &&
+                        (login.touched || login.dirty) &&
+                        login.errors['maxlength']
+                      "
+                      >El login no debe ser mayor de 16 caracteres</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Contraseña:</label>
+                <input type="password" class="form-control" id="password" />
+                <div *ngIf="password.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="
+                      password.errors && (password.touched || password.dirty)
+                    "
+                  >
+                    <span
+                      *ngIf="
+                        password.errors &&
+                        (password.touched || password.dirty) &&
+                        password.errors['required']
+                      "
+                      >Contraseña es requerida</span
+                    >
+                    <span
+                      *ngIf="
+                        password.errors &&
+                        (password.touched || password.dirty) &&
+                        password.errors['minlength']
+                      "
+                      >La contraseña no debe ser menor de 8 caracteres</span
+                    >
+                    <span
+                      *ngIf="
+                        password.errors &&
+                        (password.touched || password.dirty) &&
+                        password.errors['maxlength']
+                      "
+                      >La contraseña no puede ser mayor de 16 caracteres</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

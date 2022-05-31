@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="" (click)="home()">Kindergarten</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navegacion"
+      aria-controls="navegacion"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navegacion">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item" *ngIf="showNoAuthSection">
+          <a class="nav-link" [routerLink]="" (click)="login()">Acceder</a>
+        </li>
+        <li
+          [routerLinkActive]="['active']"
+          class="nav-item"
+          *ngIf="showAuthSection"
+        >
+          <a [routerLink]="['/estadistica']" class="nav-link">Estadísticas</a>
+        </li>
+        <li
+          [routerLinkActive]="['active']"
+          class="nav-item"
+          *ngIf="showAuthSection"
+        >
+          <a [routerLink]="['/usuarios']" class="nav-link">Usuarios</a>
+        </li>
+        <li
+          [routerLinkActive]="['active']"
+          class="nav-item"
+          *ngIf="showAuthSection"
+        >
+          <a [routerLink]="['/bandeja']" class="nav-link">Bandeja</a>
+        </li>
+        <li
+          [routerLinkActive]="['active']"
+          class="nav-item"
+          *ngIf="showAuthSection"
+        >
+          <a [routerLink]="['/centro']" class="nav-link">Centros</a>
+        </li>
+        <li class="nav-item" *ngIf="showAuthSection">
+          <a class="nav-link" [routerLink]="" (click)="logout()">Salir</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

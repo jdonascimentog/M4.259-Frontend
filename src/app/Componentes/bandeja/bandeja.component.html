@@ -1,0 +1,106 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>Bandeja de mensajes</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h3>Contactos</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="list-group">
+              <button
+                *ngFor="let usuario of contactos"
+                class="list-group-item list-group-item-action"
+                (click)="seleccionContacto(usuario)"
+                [class.active]="contacto != null && usuario.id === contacto.id"
+              >
+                {{ usuario.login }}
+                <span class="badge rounded-pill bg-success">{{
+                  numMensajes(usuario.id)
+                }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h3>Mensajes</h3>
+          </div>
+        </div>
+        <div class="row" *ngIf="contactoSeleccionado">
+          <div class="col">
+            <form [formGroup]="mensajeForm" (ngSubmit)="enviarMensaje()">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  [formControl]="mensaje"
+                  class="form-control"
+                  id="mensaje"
+                  placeholder="Mensaje"
+                  aria-describedby="botonEnvio"
+                />
+                <button
+                  id="botonEnvio"
+                  type="submit"
+                  [disabled]="!mensajeForm.valid"
+                  class="btn btn-primary"
+                >
+                  Enviar
+                </button>
+                <div *ngIf="mensaje.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="mensaje.errors && (mensaje.touched || mensaje.dirty)"
+                  >
+                    <span
+                      *ngIf="
+                        mensaje.errors &&
+                        (mensaje.touched || mensaje.dirty) &&
+                        mensaje.errors['required']
+                      "
+                      >Mensaje es requerido</span
+                    >
+                    <span
+                      *ngIf="
+                        mensaje.errors &&
+                        (mensaje.touched || mensaje.dirty) &&
+                        mensaje.errors['maxlength']
+                      "
+                      >El mensaje no puede pasar de 512 caracteres.</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row mt-3 mb-3" *ngFor="let mensaje of messagesSeen">
+          <div
+            class="col-md-10 border p-2"
+            [ngClass]="
+              mensaje.id_remitente !== contacto.id
+                ? 'offset-md-2 border-primary'
+                : 'border-success'
+            "
+          >
+            <p>{{ mensaje.mensaje }}</p>
+            <p class="text-end">
+              {{ mensaje.fecha | date: "dd/MM/yyyy H:mm:ss" }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
