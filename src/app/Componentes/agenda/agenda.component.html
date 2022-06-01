@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="row">
+    <div class="text-start col-3">
+      <h4>
+        <a
+          [routerLink]=""
+          *ngIf="!disablePrev"
+          mwlCalendarPreviousView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          ><i class="fa-solid fa-angle-left"></i
+        ></a>
+        <i
+          class="fa-solid fa-angle-left"
+          *ngIf="disablePrev"
+          style="cursor: not-allowed; color: #d9dad7"
+        ></i>
+      </h4>
+    </div>
+    <div class="text-center col-6">
+      <h4>
+        {{ viewDate | calendarDate: view + "ViewTitle":locale:weekStartsOn }}
+      </h4>
+    </div>
+    <div class="text-end col-3">
+      <h4>
+        <a
+          [routerLink]=""
+          *ngIf="!disableNext"
+          mwlCalendarNextView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          ><i class="fa-solid fa-angle-right"></i
+        ></a>
+        <i
+          class="fa-solid fa-angle-right"
+          *ngIf="disableNext"
+          style="cursor: not-allowed; color: #d9dad7"
+        ></i>
+      </h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <mwl-calendar-week-view
+        [viewDate]="viewDate"
+        (eventClicked)="detalle($event)"
+        [events]="events"
+        [locale]="locale"
+        [dayStartHour]="dayStartHour"
+        [dayEndHour]="dayEndHour"
+        precision="minutes"
+        [hourSegments]="hourSegments"
+        [weekStartsOn]="weekStartsOn"
+        [weekendDays]="weekendDays"
+        (beforeViewRender)="beforeWeekViewRender($event)"
+      >
+      </mwl-calendar-week-view>
+    </div>
+  </div>
+</div>

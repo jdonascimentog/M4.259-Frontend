@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AgendaComponent } from './Componentes/agenda/agenda.component';
 import { BandejaComponent } from './Componentes/bandeja/bandeja.component';
 import { CentroComponent } from './Componentes/centro/centro.component';
 import { EstadisticaComponent } from './Componentes/estadistica/estadistica.component';
@@ -39,6 +40,11 @@ const routes: Routes = [
   {
     path: 'centro',
     component: CentroComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'agenda',
+    component: AgendaComponent,
     canActivate: [AuthGuard],
   },
 ];
