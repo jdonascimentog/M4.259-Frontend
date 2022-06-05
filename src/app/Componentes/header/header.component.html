@@ -20,30 +20,67 @@
         <li
           [routerLinkActive]="['active']"
           class="nav-item"
-          *ngIf="showAuthSection"
+          *ngIf="showAuthSection && isInRol('admin')"
         >
           <a [routerLink]="['/estadistica']" class="nav-link">Estadísticas</a>
         </li>
         <li
           [routerLinkActive]="['active']"
           class="nav-item"
-          *ngIf="showAuthSection"
+          *ngIf="showAuthSection && isInRol('admin_centro|educador|usuario')"
         >
-          <a [routerLink]="['/usuarios']" class="nav-link">Usuarios</a>
+          <a [routerLink]="['/centro-portada']" class="nav-link">Centro</a>
         </li>
         <li
           [routerLinkActive]="['active']"
           class="nav-item"
-          *ngIf="showAuthSection"
+          *ngIf="showAuthSection && isInRol('admin_centro|educador|usuario')"
+        >
+          <a [routerLink]="['/agenda']" class="nav-link">Agenda</a>
+        </li>
+        <li
+          [routerLinkActive]="['active']"
+          class="nav-item"
+          *ngIf="
+            showAuthSection && isInRol('admin|admin_centro|educador|usuario')
+          "
         >
           <a [routerLink]="['/bandeja']" class="nav-link">Bandeja</a>
         </li>
         <li
           [routerLinkActive]="['active']"
           class="nav-item"
-          *ngIf="showAuthSection"
+          *ngIf="showAuthSection && isInRol('admin|admin_centro|educador')"
+        >
+          <a [routerLink]="['/usuarios']" class="nav-link">Usuarios</a>
+        </li>
+        <li
+          [routerLinkActive]="['active']"
+          class="nav-item"
+          *ngIf="showAuthSection && isInRol('admin|admin_centro')"
         >
           <a [routerLink]="['/centro']" class="nav-link">Centros</a>
+        </li>
+        <li
+          [routerLinkActive]="['active']"
+          class="nav-item"
+          *ngIf="showAuthSection && isInRol('admin_centro|educador')"
+        >
+          <a [routerLink]="['/aulas']" class="nav-link">Aulas</a>
+        </li>
+        <li
+          [routerLinkActive]="['active']"
+          class="nav-item"
+          *ngIf="showAuthSection && isInRol('educador')"
+        >
+          <a [routerLink]="['/aula']" class="nav-link">Aula</a>
+        </li>
+        <li
+          [routerLinkActive]="['active']"
+          class="nav-item"
+          *ngIf="showAuthSection && isInRol('usuario')"
+        >
+          <a [routerLink]="['/alumnos']" class="nav-link">Alumnos</a>
         </li>
         <li class="nav-item" *ngIf="showAuthSection">
           <a class="nav-link" [routerLink]="" (click)="logout()">Salir</a>

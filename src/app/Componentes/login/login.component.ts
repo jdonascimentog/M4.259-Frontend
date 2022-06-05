@@ -71,23 +71,37 @@ export class LoginComponent implements OnInit {
               showNoAuthSection: false,
             };
             this.headerMenusService.headerManagement.next(headerInfo);
-            this.router.navigateByUrl('home');
+            if (this.localStorageService.containsRol('admin')) {
+              this.router.navigateByUrl('home');
+            } else {
+              this.router.navigateByUrl('centro-portada');
+            }
           }
         })
       )
       .subscribe(
         (resp: AuthToken) => {
-          responseOK = true;
-          this.loginUser.user_id = resp.user_id;
-          this.loginUser.access_token = resp.access_token;
-          this.loginUser.roles = resp.rol;
+          if (resp.access_token != '') {
+            responseOK = true;
+            this.loginUser.user_id = resp.user_id;
+            this.loginUser.access_token = resp.access_token;
+            this.loginUser.roles = resp.rol;
 
-          this.localStorageService.set('user_id', this.loginUser.user_id);
-          this.localStorageService.set(
-            'access_token',
-            this.loginUser.access_token
-          );
-          this.localStorageService.set('roles', this.loginUser.roles);
+            this.localStorageService.set('user_id', this.loginUser.user_id);
+            this.localStorageService.set(
+              'access_token',
+              this.loginUser.access_token
+            );
+            this.localStorageService.set('roles', this.loginUser.roles);
+          } else {
+            responseOK = false;
+            const headerInfo: HeaderMenus = {
+              showAuthSection: false,
+              showNoAuthSection: true,
+            };
+            this.headerMenusService.headerManagement.next(headerInfo);
+            this.router.navigateByUrl('home');
+          }
         },
         (error: HttpErrorResponse) => {
           responseOK = false;

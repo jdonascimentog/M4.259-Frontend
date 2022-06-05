@@ -33,6 +33,11 @@ export class HeaderComponent implements OnInit {
     );
   }
 
+  isInRol(rol: string): boolean {
+    const roles = rol.split('|');
+    return roles.some((role) => this.localStorageService.containsRol(role));
+  }
+
   home(): void {
     this.router.navigateByUrl('home');
   }

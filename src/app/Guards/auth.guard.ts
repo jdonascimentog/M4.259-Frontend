@@ -26,8 +26,15 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     const access_token = this.localStorageService.get('access_token');
+    const rol = this.localStorageService.get('roles');
     if (access_token) {
-      // logged in so return true
+      if (
+        route.data['roles'] &&
+        !route.data['roles'].split('|').includes(rol)
+      ) {
+        this.router.navigate(['/home']);
+        return false;
+      }
       return true;
     }
 

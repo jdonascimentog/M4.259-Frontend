@@ -6,46 +6,59 @@
   </div>
   <div class="row">
     <div class="col" *ngIf="!editingCenter && !creatingCenter">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Descripción</th>
-            <th scope="col">Dirección</th>
-            <th scope="col">Teléfono</th>
-            <th scope="col">Imagen</th>
-            <th scope="col">
-              <button class="btn btn-primary" (click)="crearCentro()">
-                <i class="fa-solid fa-circle-plus"></i>
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngIf="centros.length == 0">
-            <td colspan="7">No existen centros.</td>
-          </tr>
-          <tr *ngFor="let centro of centros">
-            <td>{{ centro.id }}</td>
-            <td>{{ centro.nombre }}</td>
-            <td>{{ centro.descripcion }}</td>
-            <td>{{ centro.direccion }}</td>
-            <td>{{ centro.telefono }}</td>
-            <td>{{ centro.imagen }}</td>
-            <td>
-              <button class="btn btn-primary" (click)="editarCentro(centro)">
-                <i class="fa-solid fa-pen"></i></button
-              >&nbsp;&nbsp;|&nbsp;&nbsp;<button
-                class="btn btn-primary"
-                (click)="eliminarCentro(centro.id)"
-              >
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Dirección</th>
+              <th scope="col">Teléfono</th>
+              <th scope="col">Imagen</th>
+              <th scope="col">
+                <button
+                  *ngIf="isInRol('admin')"
+                  class="btn btn-primary"
+                  (click)="crearCentro()"
+                >
+                  <i class="fa-solid fa-circle-plus"></i>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="centros.length == 0">
+              <td colspan="7">No existen centros.</td>
+            </tr>
+            <tr *ngFor="let centro of centros">
+              <td>{{ centro.id }}</td>
+              <td>{{ centro.nombre }}</td>
+              <td>{{ centro.descripcion }}</td>
+              <td>{{ centro.direccion }}</td>
+              <td>{{ centro.telefono }}</td>
+              <td>
+                <img
+                  class="img-fluid"
+                  src="{{ centro.imagen }}"
+                  alt="{{ centro.imagen }}"
+                />
+              </td>
+              <td>
+                <button class="btn btn-primary" (click)="editarCentro(centro)">
+                  <i class="fa-solid fa-pen"></i></button
+                >&nbsp;&nbsp;<button
+                  *ngIf="isInRol('admin')"
+                  class="btn btn-primary"
+                  (click)="eliminarCentro(centro.id)"
+                >
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="col" *ngIf="editingCenter || creatingCenter">
       <div class="container">

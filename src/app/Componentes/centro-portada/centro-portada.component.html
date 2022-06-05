@@ -1,1 +1,33 @@
-<p>centro-portada works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>{{ centro.nombre }}</h1>
+    </div>
+  </div>
+  <div class="row" *ngIf="centro.imagen != ''">
+    <div class="col">
+      <img
+        src="{{ centro.imagen }}"
+        alt="Imagen del centro"
+        class="img-fluid"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <p>{{ centro.descripcion }}</p>
+    </div>
+    <div class="col-6">
+      <p>
+        <strong>Dirección:</strong>
+      </p>
+      <p>{{ centro.direccion }}</p>
+    </div>
+    <div class="col-6">
+      <p>
+        <strong>Teléfono:</strong>
+      </p>
+      <p>{{ centro.telefono }}</p>
+    </div>
+  </div>
+</div>

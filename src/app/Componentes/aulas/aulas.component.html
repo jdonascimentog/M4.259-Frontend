@@ -1,1 +1,191 @@
-<p>aulas works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>Aulas</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col" *ngIf="!editingAula && !creatingAula">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Imagen</th>
+              <th scope="col">
+                <button
+                  *ngIf="isInRol('admin_centro')"
+                  class="btn btn-primary"
+                  (click)="crearAula()"
+                >
+                  <i class="fa-solid fa-circle-plus"></i>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="aulas.length == 0">
+              <td colspan="7">No existen aulas.</td>
+            </tr>
+            <tr *ngFor="let aula of aulas">
+              <td>{{ aula.id }}</td>
+              <td>{{ aula.nombre }}</td>
+              <td>{{ aula.descripcion }}</td>
+              <td>
+                <img
+                  class="img-thumbnail w-200"
+                  src="{{ aula.imagen }}"
+                  alt="{{ aula.imagen }}"
+                />
+              </td>
+              <td>
+                <button class="btn btn-primary" (click)="editarAula(aula)">
+                  <i class="fa-solid fa-pen"></i></button
+                >&nbsp;&nbsp;<button
+                  *ngIf="isInRol('admin_centro')"
+                  class="btn btn-primary"
+                  (click)="eliminarAula(aula.id)"
+                >
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col" *ngIf="editingAula || creatingAula">
+      <div class="container">
+        <div class="row">
+          <div class="col text-end">
+            <button class="btn btn-primary" (click)="volverListado()">
+              <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Volver al
+              listado
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <form [formGroup]="aulaForm" (ngSubmit)="guardarAula()">
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre:</label>
+                <input
+                  type="text"
+                  [formControl]="nombre"
+                  class="form-control"
+                  id="nombre"
+                />
+
+                <div *ngIf="nombre.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="nombre.errors && (nombre.touched || nombre.dirty)"
+                  >
+                    <span
+                      *ngIf="
+                        nombre.errors &&
+                        (nombre.touched || nombre.dirty) &&
+                        nombre.errors['required']
+                      "
+                      >Nombre es requerido</span
+                    >
+                    <span
+                      *ngIf="
+                        nombre.errors &&
+                        (nombre.touched || nombre.dirty) &&
+                        nombre.errors['minlength']
+                      "
+                      >El nombre no puede ser inferior a 3 caracteres</span
+                    >
+                    <span
+                      *ngIf="
+                        nombre.errors &&
+                        (nombre.touched || nombre.dirty) &&
+                        nombre.errors['maxlength']
+                      "
+                      >El nombre no puede ser mayor a 16 caracteres</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción:</label>
+                <input
+                  type="text"
+                  [formControl]="descripcion"
+                  class="form-control"
+                  id="descripcion"
+                />
+
+                <div *ngIf="descripcion.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="
+                      descripcion.errors &&
+                      (descripcion.touched || descripcion.dirty)
+                    "
+                  >
+                    <span
+                      *ngIf="
+                        descripcion.errors &&
+                        (descripcion.touched || descripcion.dirty) &&
+                        descripcion.errors['required']
+                      "
+                      >Descripción es requerida</span
+                    >
+                    <span
+                      *ngIf="
+                        descripcion.errors &&
+                        (descripcion.touched || descripcion.dirty) &&
+                        descripcion.errors['maxlength']
+                      "
+                      >La descripción no puede ser mayor de 512 caracteres</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="imagen" class="form-label"
+                  >Dirección de la imagen:</label
+                >
+                <input
+                  type="text"
+                  [formControl]="imagen"
+                  class="form-control"
+                  id="imagen"
+                />
+                <div *ngIf="imagen.errors" class="mb-3">
+                  <span
+                    style="color: red"
+                    *ngIf="imagen.errors && (imagen.touched || imagen.dirty)"
+                  >
+                    <span
+                      *ngIf="
+                        imagen.errors &&
+                        (imagen.touched || imagen.dirty) &&
+                        imagen.errors['required']
+                      "
+                      >Imagen es requerida</span
+                    >
+                    <span
+                      *ngIf="
+                        imagen.errors &&
+                        (imagen.touched || imagen.dirty) &&
+                        imagen.errors['maxlength']
+                      "
+                      >La dirección de imagen no puede ser mayor de 255
+                      caracteres</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

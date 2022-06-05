@@ -20,7 +20,7 @@ export class LocalStorageService {
 
   containsRol(rol: string): boolean {
     let roles = this.get('roles');
-    const contieneRol: boolean = roles?.includes(rol) ?? false;
+    const contieneRol: boolean = roles?.split('|')?.includes(rol) ?? false;
     return contieneRol;
   }
 }

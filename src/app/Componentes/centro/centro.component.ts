@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { CentroDTO } from 'src/app/Modelos/centro.dto';
 import { CentroService } from 'src/app/Servicios/centro.service';
+import { LocalStorageService } from 'src/app/Servicios/local-storage.service';
 
 @Component({
   selector: 'app-centro',
@@ -28,6 +29,7 @@ export class CentroComponent implements OnInit {
 
   constructor(
     private centroService: CentroService,
+    private localStorageService: LocalStorageService,
     private formBuilder: FormBuilder
   ) {
     this.nombre = new FormControl('', [
@@ -66,6 +68,11 @@ export class CentroComponent implements OnInit {
     this.cargarCentros();
   }
 
+  isInRol(rol: string): boolean {
+    const roles = rol.split('|');
+    return roles.some((role) => this.localStorageService.containsRol(role));
+  }
+
   cargarCentros(): void {
     this.centroService.getCentros().subscribe({
       next: (centros: CentroDTO[]) => {
@@ -75,7 +82,9 @@ export class CentroComponent implements OnInit {
       complete: () => console.info('complete'),
     });
   }
-
+  limpiarFormulario(): void {
+    this.centroForm.reset();
+  }
   guardarCentro(): void {
     this.centro.nombre = this.nombre.value;
     this.centro.descripcion = this.descripcion.value;
@@ -109,6 +118,7 @@ export class CentroComponent implements OnInit {
   }
 
   crearCentro(): void {
+    this.limpiarFormulario();
     this.centro = {
       id: 0,
       nombre: '',
@@ -121,6 +131,7 @@ export class CentroComponent implements OnInit {
   }
 
   editarCentro(centro: CentroDTO): void {
+    this.limpiarFormulario();
     this.centro = centro;
     this.nombre.setValue(centro.nombre);
     this.descripcion.setValue(centro.descripcion);

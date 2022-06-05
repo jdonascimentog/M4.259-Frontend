@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { UsuarioDTO } from '../Modelos/usuario.dto';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,44 +17,97 @@ export class UsuarioService {
       email: 'admin@kindergarten.es',
       telefono: 99,
       password: '',
+      rol: 'admin',
     },
     {
       id: 2,
-      login: 'directorCentro1',
-      email: 'director1@kindergarten.es',
+      login: 'admin_centro1',
+      email: 'admin_centro1@kindergarten.es',
       telefono: 99,
       password: '',
+      rol: 'admin_centro',
     },
     {
       id: 3,
-      login: 'directorCentro2',
-      email: 'director2@kindergarten.es',
+      login: 'admin_centro2',
+      email: 'admin_centro2@kindergarten.es',
       telefono: 99,
       password: '',
+      rol: 'admin_centro',
     },
     {
       id: 4,
-      login: 'directorCentro3',
-      email: 'director3@kindergarten.es',
+      login: 'educador1',
+      email: 'educador1@kindergarten.es',
       telefono: 99,
       password: '',
+      rol: 'educador',
     },
     {
       id: 5,
-      login: 'directorCentro4',
-      email: 'director4@kindergarten.es',
+      login: 'educador2',
+      email: 'educador2@kindergarten.es',
       telefono: 99,
       password: '',
+      rol: 'educador',
+    },
+    {
+      id: 6,
+      login: 'madre1',
+      email: 'madre1@kindergarten.es',
+      telefono: 99,
+      password: '',
+      rol: 'usuario',
+    },
+    {
+      id: 7,
+      login: 'madre2',
+      email: 'madre2@kindergarten.es',
+      telefono: 99,
+      password: '',
+      rol: 'usuario',
+    },
+    {
+      id: 8,
+      login: 'padre3',
+      email: 'padre3@kindergarten.es',
+      telefono: 99,
+      password: '',
+      rol: 'usuario',
+    },
+    {
+      id: 9,
+      login: 'padre4',
+      email: 'padre4@kindergarten.es',
+      telefono: 99,
+      password: '',
+      rol: 'usuario',
     },
   ];
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private localStorageService: LocalStorageService
+  ) {
     this.controller = 'usuario';
     this.urlServicio = 'http://localhost:3000/' + this.controller;
   }
 
   getUsuarios(): Observable<UsuarioDTO[]> {
-    return of(this.usuarios);
+    const rol = this.localStorageService.get('roles');
+    let usuarios: UsuarioDTO[] = [];
+    if (rol == 'admin') {
+      usuarios = this.usuarios.filter(
+        (user) => user.rol == 'admin' || user.rol == 'admin_centro'
+      );
+    } else if (rol == 'admin_centro') {
+      usuarios = this.usuarios.filter((user) => user.rol != 'admin');
+    } else {
+      usuarios = this.usuarios.filter(
+        (user) => user.rol != 'admin' && user.rol != 'admin_centro'
+      );
+    }
+    return of(usuarios);
   }
 
   createUsuario(usuario: UsuarioDTO): Observable<UsuarioDTO> {

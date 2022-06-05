@@ -1,1 +1,55 @@
-<p>aula works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-10">
+      <h1>{{ aula.nombre }}</h1>
+      <p>{{ aula.descripcion }}</p>
+    </div>
+    <div class="col-2" *ngIf="aula.imagen != ''">
+      <img src="{{ aula.imagen }}" alt="Imagen del aula" class="img-fluid" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12" *ngIf="isInRol('educador')">
+      <h2>Alumnos</h2>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Fecha nacimiento</th>
+              <th scope="col">
+                <button class="btn btn-primary" (click)="crearInfante()">
+                  <i class="fa-solid fa-circle-plus"></i>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="infantes.length == 0">
+              <td colspan="7">No existen aulas.</td>
+            </tr>
+            <tr *ngFor="let infante of infantes">
+              <td>{{ infante.id }}</td>
+              <td>{{ infante.nombre }}</td>
+              <td>{{ infante.fecha_nac }}</td>
+              <td>
+                <button
+                  class="btn btn-primary"
+                  (click)="editarInfante(infante)"
+                >
+                  <i class="fa-solid fa-pen"></i></button
+                >&nbsp;&nbsp;<button
+                  class="btn btn-primary"
+                  (click)="eliminarInfante(infante.id)"
+                >
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
