@@ -9,9 +9,12 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-12" *ngIf="isInRol('educador')">
+    <div class="col" *ngIf="isInRol('educador')">
       <h2>Alumnos</h2>
-      <div class="table-responsive">
+      <div
+        class="table-responsive"
+        *ngIf="!editingInfante && !creatingInfante && !additionalInfante"
+      >
         <table class="table table-hover">
           <thead>
             <tr>
@@ -27,12 +30,14 @@
           </thead>
           <tbody>
             <tr *ngIf="infantes.length == 0">
-              <td colspan="7">No existen aulas.</td>
+              <td colspan="7">No existen infantes.</td>
             </tr>
             <tr *ngFor="let infante of infantes">
               <td>{{ infante.id }}</td>
               <td>{{ infante.nombre }}</td>
-              <td>{{ infante.fecha_nac }}</td>
+              <td class="text-capitalize">
+                {{ infante.fecha_nac | date: "dd MMMM YYYY" }}
+              </td>
               <td>
                 <button
                   class="btn btn-primary"
@@ -43,12 +48,119 @@
                   class="btn btn-primary"
                   (click)="eliminarInfante(infante.id)"
                 >
-                  <i class="fa-solid fa-trash-can"></i>
+                  <i class="fa-solid fa-trash-can"></i></button
+                >&nbsp;&nbsp;<button
+                  class="btn btn-primary"
+                  (click)="adicionalInfante(infante)"
+                >
+                  <i class="fa-solid fa-circle-info"></i>
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+      <div *ngIf="(editingInfante || creatingInfante) && !additionalInfante">
+        <div class="container">
+          <div class="row">
+            <div class="col text-end">
+              <button class="btn btn-primary" (click)="volverListado()">
+                <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Volver al
+                listado
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <form [formGroup]="infanteForm" (ngSubmit)="guardarInfante()">
+                <div class="mb-3">
+                  <label for="nombre" class="form-label">Nombre:</label>
+                  <input
+                    type="text"
+                    [formControl]="nombre"
+                    class="form-control"
+                    id="nombre"
+                  />
+
+                  <div *ngIf="nombre.errors" class="mb-3">
+                    <span
+                      style="color: red"
+                      *ngIf="nombre.errors && (nombre.touched || nombre.dirty)"
+                    >
+                      <span
+                        *ngIf="
+                          nombre.errors &&
+                          (nombre.touched || nombre.dirty) &&
+                          nombre.errors['required']
+                        "
+                        >Nombre es requerido</span
+                      >
+                      <span
+                        *ngIf="
+                          nombre.errors &&
+                          (nombre.touched || nombre.dirty) &&
+                          nombre.errors['minlength']
+                        "
+                        >El nombre no puede ser inferior a 3 caracteres</span
+                      >
+                      <span
+                        *ngIf="
+                          nombre.errors &&
+                          (nombre.touched || nombre.dirty) &&
+                          nombre.errors['maxlength']
+                        "
+                        >El nombre no puede ser mayor a 80 caracteres</span
+                      >
+                    </span>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="fecha_nac" class="form-label"
+                    >Fecha de nacimiento:</label
+                  >
+                  <input
+                    type="date"
+                    [formControl]="fecha_nac"
+                    class="form-control"
+                    id="fecha_nac"
+                  />
+
+                  <div *ngIf="fecha_nac.errors" class="mb-3">
+                    <span
+                      style="color: red"
+                      *ngIf="
+                        fecha_nac.errors &&
+                        (fecha_nac.touched || fecha_nac.dirty)
+                      "
+                    >
+                      <span
+                        *ngIf="
+                          fecha_nac.errors &&
+                          (fecha_nac.touched || fecha_nac.dirty) &&
+                          fecha_nac.errors['required']
+                        "
+                        >Fecha de nacimiento es requerida</span
+                      >
+                    </span>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="additionalInfante">
+        <div class="container">
+          <div class="row">
+            <div class="col text-end">
+              <button class="btn btn-primary" (click)="volverListado()">
+                <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Volver al
+                listado
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -97,6 +97,8 @@ export class AulaService {
 
   createAula(aula: AulaDTO): Observable<AulaDTO> {
     aula.id_centro = this.centro.id;
+    const id = Math.max(...this.aulas.map((o) => o.id)) + 1;
+    aula.id = id;
     this.aulas.push(aula);
     return of(aula);
   }

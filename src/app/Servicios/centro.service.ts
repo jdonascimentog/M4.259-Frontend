@@ -134,6 +134,8 @@ export class CentroService {
   }
 
   createCentro(centro: CentroDTO): Observable<CentroDTO> {
+    const id = Math.max(...this.centros.map((o) => o.id)) + 1;
+    centro.id = id;
     this.centros.push(centro);
     return of(centro);
   }

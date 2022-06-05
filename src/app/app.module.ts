@@ -1,5 +1,7 @@
+import { registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import localeES from '@angular/common/locales/es';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -30,6 +32,7 @@ import { HomeComponent } from './Componentes/home/home.component';
 import { LoginComponent } from './Componentes/login/login.component';
 import { UsersComponent } from './Componentes/users/users.component';
 import { AuthInterceptorService } from './Servicios/auth-interceptor.service';
+registerLocaleData(localeES, 'es');
 
 export class DateCalendarModule extends CalendarNativeDateFormatter {
   public override weekViewHour({ date, locale }: DateFormatterParams): string {
@@ -85,6 +88,7 @@ export class DateCalendarModule extends CalendarNativeDateFormatter {
       useClass: AuthInterceptorService,
       multi: true,
     },
+    { provide: LOCALE_ID, useValue: 'es' },
   ],
   bootstrap: [AppComponent],
 })

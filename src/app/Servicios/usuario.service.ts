@@ -111,6 +111,8 @@ export class UsuarioService {
   }
 
   createUsuario(usuario: UsuarioDTO): Observable<UsuarioDTO> {
+    const id = Math.max(...this.usuarios.map((o) => o.id)) + 1;
+    usuario.id = id;
     this.usuarios.push(usuario);
     return of(usuario);
   }

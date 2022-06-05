@@ -159,6 +159,8 @@ export class BandejaService {
   }
 
   createMensaje(mensaje: MensajeDTO): Observable<MensajeDTO> {
+    const id = Math.max(...this.mensajes.map((o) => o.id)) + 1;
+    mensaje.id = id;
     this.mensajes.push(mensaje);
     return of(mensaje);
   }
