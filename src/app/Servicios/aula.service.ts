@@ -20,8 +20,7 @@ export class AulaService {
       id_centro: 1,
       nombre: 'Panda',
       descripcion: 'Clase de los pandas',
-      imagen:
-        'https://pixabay.com/get/g382099ee208683df6fb77184c3a0cc1ec5cada8d3bb156deab82b94943b7695713b39a2ffe55fce3749cdec127723d34ca8aeffab6492a244093719306e0cbcb7db4e57c2976b1e7b225bd480d2127cb_1280.png',
+      imagen: 'https://openclipart.org/download/288594/PandaPeace.svg',
     },
   ];
 
