@@ -1,4 +1,167 @@
 <div class="container">
+  <div class="row" *ngIf="isInRol('admin_centro|educador')">
+    <div class="col text-end mb-3" *ngIf="!creatingEvento">
+      <button class="btn btn-primary" (click)="crearEvento()">
+        <i class="fa-solid fa-circle-plus"></i>&nbsp;Nuevo evento
+      </button>
+    </div>
+    <div class="col" *ngIf="creatingEvento">
+      <div class="container">
+        <div class="row">
+          <div class="col text-end">
+            <button class="btn btn-primary" (click)="volver()">
+              <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Volver
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <form
+              [formGroup]="eventoForm"
+              (ngSubmit)="guardarEvento()"
+              class="mb-3"
+            >
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="titulo" class="form-label">Título:</label>
+                      <input
+                        type="text"
+                        [formControl]="titulo"
+                        class="form-control"
+                        id="titulo"
+                      />
+
+                      <div *ngIf="titulo.errors" class="mb-3">
+                        <span
+                          style="color: red"
+                          *ngIf="
+                            titulo.errors && (titulo.touched || titulo.dirty)
+                          "
+                        >
+                          <span
+                            *ngIf="
+                              titulo.errors &&
+                              (titulo.touched || titulo.dirty) &&
+                              titulo.errors['required']
+                            "
+                            >Título es requerido</span
+                          >
+                          <span
+                            *ngIf="
+                              titulo.errors &&
+                              (titulo.touched || titulo.dirty) &&
+                              titulo.errors['minlength']
+                            "
+                            >El título no puede ser inferior a 3
+                            caracteres</span
+                          >
+                          <span
+                            *ngIf="
+                              titulo.errors &&
+                              (titulo.touched || titulo.dirty) &&
+                              titulo.errors['maxlength']
+                            "
+                            >El título no puede ser mayor a 80 caracteres</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="tipo" class="form-label">Tipo:</label>
+                      <select
+                        class="form-select"
+                        id="tipo"
+                        [formControl]="tipo"
+                        aria-label="Tipo del evento"
+                      >
+                        <option
+                          *ngFor="let resultado of tiposEventos"
+                          [value]="resultado.value"
+                        >
+                          {{ resultado.text }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="fecha_inicio" class="form-label"
+                        >Fecha de inicio:</label
+                      >
+                      <input
+                        type="datetime-local"
+                        [formControl]="fecha_inicio"
+                        class="form-control"
+                        id="fecha_inicio"
+                      />
+
+                      <div *ngIf="fecha_inicio.errors" class="mb-3">
+                        <span
+                          style="color: red"
+                          *ngIf="
+                            fecha_inicio.errors &&
+                            (fecha_inicio.touched || fecha_inicio.dirty)
+                          "
+                        >
+                          <span
+                            *ngIf="
+                              fecha_inicio.errors &&
+                              (fecha_inicio.touched || fecha_inicio.dirty) &&
+                              fecha_inicio.errors['required']
+                            "
+                            >Fecha de inicio es obligatoria</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="fecha_fin" class="form-label"
+                        >Fecha de fin:</label
+                      >
+                      <input
+                        type="datetime-local"
+                        [formControl]="fecha_fin"
+                        class="form-control"
+                        id="fecha_fin"
+                      />
+
+                      <div *ngIf="fecha_fin.errors" class="mb-3">
+                        <span
+                          style="color: red"
+                          *ngIf="
+                            fecha_fin.errors &&
+                            (fecha_fin.touched || fecha_fin.dirty)
+                          "
+                        >
+                          <span
+                            *ngIf="
+                              fecha_fin.errors &&
+                              (fecha_fin.touched || fecha_fin.dirty) &&
+                              fecha_fin.errors['required']
+                            "
+                            >Fecha de fin es obligatoria</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-3 text-end">
+                  <div class="col">
+                    <button type="submit" class="btn btn-primary">
+                      Guardar evento
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="text-start col-3">
       <h4>
@@ -44,7 +207,6 @@
     <div class="col">
       <mwl-calendar-week-view
         [viewDate]="viewDate"
-        (eventClicked)="detalle($event)"
         [events]="events"
         [locale]="locale"
         [dayStartHour]="dayStartHour"
@@ -53,6 +215,7 @@
         [hourSegments]="hourSegments"
         [weekStartsOn]="weekStartsOn"
         [weekendDays]="weekendDays"
+        [excludeDays]="weekendDays"
         (beforeViewRender)="beforeWeekViewRender($event)"
       >
       </mwl-calendar-week-view>

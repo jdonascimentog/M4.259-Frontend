@@ -4,7 +4,7 @@ import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
 @Injectable()
 export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
   public override week(event: CalendarEvent): string {
-    let title = 'Evento';
+    let title = event.title;
     /*let evento = event.meta.evento;
     let tipo_clase = event.meta.tipo;
     let title = '<div>';
@@ -17,7 +17,7 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
   }
 
   public override weekTooltip(event: CalendarEvent): string {
-    let title = 'tooltip evento';
+    let title = event.title;
     /*let evento = event.meta.evento;
     let title = '<div class="wrapper" style="color:black;background:white">';
     if (evento.nomAsignatura != null) {

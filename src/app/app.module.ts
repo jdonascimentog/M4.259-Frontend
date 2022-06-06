@@ -2,7 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localeES from '@angular/common/locales/es';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -17,8 +17,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AgendaComponent } from './Componentes/agenda/agenda.component';
-import { AlumnoComponent } from './Componentes/alumno/alumno.component';
-import { AlumnosComponent } from './Componentes/alumnos/alumnos.component';
 import { AulaComponent } from './Componentes/aula/aula.component';
 import { AulasComponent } from './Componentes/aulas/aulas.component';
 import { AuthComponent } from './Componentes/auth/auth.component';
@@ -59,13 +57,12 @@ export class DateCalendarModule extends CalendarNativeDateFormatter {
     AgendaComponent,
     AulasComponent,
     AulaComponent,
-    AlumnosComponent,
-    AlumnoComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     NgxChartsModule,
     BrowserAnimationsModule,

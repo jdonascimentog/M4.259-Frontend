@@ -5,7 +5,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AulaDTO } from 'src/app/Modelos/aula.dto';
+import { AgendaService } from 'src/app/Servicios/agenda.service';
 import { AulaService } from 'src/app/Servicios/aula.service';
 import { LocalStorageService } from 'src/app/Servicios/local-storage.service';
 
@@ -27,7 +29,9 @@ export class AulasComponent implements OnInit {
   aulaForm: FormGroup;
 
   constructor(
+    private router: Router,
     private aulaService: AulaService,
+    private agendaService: AgendaService,
     private localStorageService: LocalStorageService,
     private formBuilder: FormBuilder
   ) {
@@ -84,6 +88,7 @@ export class AulasComponent implements OnInit {
       this.aulaService.createAula(this.aula).subscribe({
         next: (aula: AulaDTO) => {
           if (aula.id) {
+            this.agendaService.createAgendaAula(aula.id_centro, aula.id);
             this.cargarAulas();
             this.volverListado();
           }
@@ -141,5 +146,9 @@ export class AulasComponent implements OnInit {
   volverListado(): void {
     this.editingAula = false;
     this.creatingAula = false;
+  }
+
+  irAula(id: number): void {
+    this.router.navigate(['aula', id]);
   }
 }

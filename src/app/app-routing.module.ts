@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AgendaComponent } from './Componentes/agenda/agenda.component';
-import { AlumnoComponent } from './Componentes/alumno/alumno.component';
-import { AlumnosComponent } from './Componentes/alumnos/alumnos.component';
 import { AulaComponent } from './Componentes/aula/aula.component';
 import { AulasComponent } from './Componentes/aulas/aulas.component';
 import { BandejaComponent } from './Componentes/bandeja/bandeja.component';
@@ -66,24 +64,18 @@ const routes: Routes = [
   {
     path: 'aulas',
     component: AulasComponent,
-    data: { roles: 'admin_centro|educador' },
+    data: { roles: 'admin_centro|educador|usuario' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'aula/:id',
+    component: AulaComponent,
+    data: { roles: 'educador|usuario' },
     canActivate: [AuthGuard],
   },
   {
     path: 'aula',
     component: AulaComponent,
-    data: { roles: 'educador' },
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'alumnos',
-    component: AlumnosComponent,
-    data: { roles: 'usuario' },
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'alumno',
-    component: AlumnoComponent,
     data: { roles: 'educador|usuario' },
     canActivate: [AuthGuard],
   },

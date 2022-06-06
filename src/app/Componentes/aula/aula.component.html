@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col" *ngIf="isInRol('educador')">
+    <div class="col" *ngIf="isInRol('educador|usuario')">
       <h2>Alumnos</h2>
       <div
         class="table-responsive"
@@ -45,6 +45,7 @@
                 >
                   <i class="fa-solid fa-pen"></i></button
                 >&nbsp;&nbsp;<button
+                  *ngIf="isInRol('educador')"
                   class="btn btn-primary"
                   (click)="eliminarInfante(infante.id)"
                 >
@@ -158,6 +159,240 @@
                 <i class="fa-solid fa-circle-arrow-left"></i>&nbsp;Volver al
                 listado
               </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <h3>Alimentación</h3>
+              <div class="table-responsive" *ngIf="!creatingAlimentacion">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Fecha</th>
+                      <th scope="col">Desayuno</th>
+                      <th scope="col">Almuerzo</th>
+                      <th scope="col">Comida</th>
+                      <th scope="col">Merienda</th>
+                      <th scope="col">
+                        <button
+                          *ngIf="isInRol('educador')"
+                          class="btn btn-primary"
+                          (click)="crearAlimentacion()"
+                        >
+                          <i class="fa-solid fa-circle-plus"></i>
+                        </button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="alimentacion.length == 0">
+                      <td colspan="7">No existen registros.</td>
+                    </tr>
+                    <tr *ngFor="let ali of alimentacion">
+                      <td class="text-capitalize">
+                        {{ ali.fecha | date: "dd MMMM YYYY" }}
+                      </td>
+                      <td>
+                        {{ ali.desayuno_des != "" ? ali.desayuno_des : "-" }}
+                      </td>
+                      <td>
+                        {{ ali.almuerzo_des != "" ? ali.almuerzo_des : "-" }}
+                      </td>
+                      <td>{{ ali.comida_des != "" ? ali.comida_des : "-" }}</td>
+                      <td>
+                        {{ ali.merienda_des != "" ? ali.merienda_des : "-" }}
+                      </td>
+                      <td>&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div *ngIf="creatingAlimentacion">
+                <div class="container">
+                  <div class="row">
+                    <div class="col text-end">
+                      <button
+                        class="btn btn-primary"
+                        (click)="volverListadoAlimentacion()"
+                      >
+                        <i class="fa-solid fa-circle-arrow-left"></i
+                        >&nbsp;Volver al listado
+                      </button>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <form
+                        [formGroup]="alimentacionForm"
+                        (ngSubmit)="guardarAlimentacion()"
+                      >
+                        <div class="mb-3">
+                          <label for="desayuno" class="form-label"
+                            >Desayuno:</label
+                          >
+                          <select
+                            class="form-select"
+                            id="desayuno"
+                            [formControl]="desayuno"
+                            aria-label="Resultado desayuno"
+                          >
+                            <option
+                              *ngFor="
+                                let resultado of tiposResultadosAlimentacion
+                              "
+                              [value]="resultado.value"
+                            >
+                              {{ resultado.text }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="almuerzo" class="form-label"
+                            >Almuerzo:</label
+                          >
+                          <select
+                            class="form-select"
+                            id="almuerzo"
+                            [formControl]="almuerzo"
+                            aria-label="Resultado almuerzo"
+                          >
+                            <option
+                              *ngFor="
+                                let resultado of tiposResultadosAlimentacion
+                              "
+                              [value]="resultado.value"
+                            >
+                              {{ resultado.text }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="comida" class="form-label">Comida:</label>
+                          <select
+                            class="form-select"
+                            id="comida"
+                            [formControl]="comida"
+                            aria-label="Resultado comida"
+                          >
+                            <option
+                              *ngFor="
+                                let resultado of tiposResultadosAlimentacion
+                              "
+                              [value]="resultado.value"
+                            >
+                              {{ resultado.text }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="merienda" class="form-label"
+                            >Merienda:</label
+                          >
+                          <select
+                            class="form-select"
+                            id="merienda"
+                            [formControl]="merienda"
+                            aria-label="Resultado merienda"
+                          >
+                            <option
+                              *ngFor="
+                                let resultado of tiposResultadosAlimentacion
+                              "
+                              [value]="resultado.value"
+                            >
+                              {{ resultado.text }}
+                            </option>
+                          </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                          Guardar
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <h3>Madres/Padres/Tutores</h3>
+              <div class="container">
+                <div class="row border-bottom mb-3" *ngFor="let usu of padres">
+                  <div class="col-md-6">
+                    <strong>Usuario:</strong> {{ usu.login }}
+                  </div>
+                  <div class="col-md-6">
+                    <strong>Teléfono:</strong> {{ usu.telefono }}
+                  </div>
+                  <div class="col-md-12">
+                    <strong>Dirección:</strong> {{ usu.email }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <h3>Seguimiento</h3>
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h4>{{ libro.nombre }}</h4>
+                    <p>
+                      <small>{{
+                        libro.fecha_creacion | date: "dd MMMM YYYY"
+                      }}</small>
+                    </p>
+                    <p>{{ libro.descripcion }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <h5>Preguntas</h5>
+                  </div>
+                </div>
+                <div
+                  class="row border-bottom mb-3"
+                  *ngFor="let pregunta of libro.preguntas"
+                >
+                  <div class="col-md-12">
+                    <p>
+                      <strong>{{ pregunta.pregunta }}</strong>
+                    </p>
+                  </div>
+                  <div class="col-md-12" *ngIf="pregunta.tipo == 0">
+                    <p>
+                      <small
+                        >[{{
+                          pregunta.fecha_respuesta | date: "dd MMMM YYYY"
+                        }}]</small
+                      >
+                      {{ pregunta.respuesta }}
+                    </p>
+                  </div>
+                  <div class="col-md-12" *ngIf="pregunta.tipo == 1">
+                    <p>
+                      <small
+                        >[{{
+                          pregunta.fecha_respuesta | date: "dd MMMM YYYY"
+                        }}]</small
+                      >&nbsp;
+                      <input
+                        type="text"
+                        name="respuesta"
+                        id="respuesta"
+                        #respuesta
+                        value="{{ pregunta.respuesta }}"
+                      />&nbsp;<button
+                        class="btn btn-primary"
+                        (click)="guardarRespuesta(pregunta, respuesta.value)"
+                      >
+                        <i class="fa-solid fa-save"></i>
+                      </button>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

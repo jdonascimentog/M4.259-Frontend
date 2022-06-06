@@ -19,7 +19,7 @@ export class CentroService {
       direccion: 'Calle prueba',
       telefono: 99,
       imagen:
-        'https://pixabay.com/get/g1171ddba7f9213db821baca9e8a115939e77717f20a4336f1ce40571076012103430989f4195067e85966bc4083e91cd9e2394033e87db098d09f954b20aab2ddc232c81c26d7f17233de6f9a3471eb6_1920.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/a/a5/Guarder%C3%ADa_infantil%2C_Centro_C%C3%ADvico.jpg',
     },
     {
       id: 2,
@@ -133,10 +133,33 @@ export class CentroService {
     return of(centro);
   }
 
+  getCentroInstancia(): CentroDTO {
+    const rol = this.localStorageService.get('roles');
+    const user_id = this.localStorageService.get('user_id');
+    let centro: CentroDTO = {
+      id: 99,
+      nombre: '',
+      descripcion: '',
+      direccion: '',
+      telefono: 99,
+      imagen: '',
+    };
+    if (rol != 'admin') {
+      const centros_usuario = this.usuariosCentros.filter(
+        (usCe) => usCe.login == user_id
+      );
+      centro = this.centros.filter((cen) =>
+        centros_usuario.some((usce) => usce.id_centro == cen.id)
+      )[0];
+    }
+    return centro;
+  }
+
   createCentro(centro: CentroDTO): Observable<CentroDTO> {
     const id = Math.max(...this.centros.map((o) => o.id)) + 1;
     centro.id = id;
     this.centros.push(centro);
+    //this.agendaService.createAgendaCentro(id);
     return of(centro);
   }
 

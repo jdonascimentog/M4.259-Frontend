@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { AulaDTO } from '../Modelos/aula.dto';
 import { CentroDTO } from '../Modelos/centro.dto';
 import { CentroService } from './centro.service';
+import { InfanteService } from './infante.service';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -44,6 +45,7 @@ export class AulaService {
   constructor(
     private http: HttpClient,
     private localStorageService: LocalStorageService,
+    private infanteService: InfanteService,
     private centroService: CentroService
   ) {
     this.controller = 'aulas';
@@ -58,7 +60,7 @@ export class AulaService {
   }
 
   getAulas(): Observable<AulaDTO[]> {
-    const user_id = this.localStorageService.get('user_id');
+    const user_id = this.localStorageService.get('user_id') ?? '';
     let aulas: AulaDTO[] = [];
 
     if (this.localStorageService.containsRol('admin_centro')) {
@@ -69,6 +71,11 @@ export class AulaService {
       );
       aulas = this.aulas.filter((au) =>
         aulas_usuario.some((usua) => usua.id_aula == au.id)
+      );
+    } else if (this.localStorageService.containsRol('usuario')) {
+      const aulasInfantes = this.infanteService.getAulasParents(user_id);
+      aulas = this.aulas.filter((au) =>
+        aulasInfantes.some((usua) => usua == au.id)
       );
     }
     return of(aulas);
@@ -95,11 +102,39 @@ export class AulaService {
     return of(aula);
   }
 
+  getAulaInstancia(): AulaDTO {
+    const rol = this.localStorageService.get('roles');
+    const user_id = this.localStorageService.get('user_id');
+    let aula: AulaDTO = {
+      id: 99,
+      id_centro: -1,
+      nombre: '',
+      descripcion: '',
+      imagen: '',
+    };
+    if (rol == 'educador') {
+      const aulas_usuario = this.usuariosAula.filter(
+        (usAu) => usAu.login == user_id
+      );
+      aula = this.aulas.filter((au) =>
+        aulas_usuario.some((usua) => usua.id_aula == au.id)
+      )[0];
+    }
+    return aula;
+  }
+
+  getAulaById(id: number): Observable<AulaDTO> {
+    let aula = this.aulas.filter((au) => au.id == id)[0];
+
+    return of(aula);
+  }
+
   createAula(aula: AulaDTO): Observable<AulaDTO> {
     aula.id_centro = this.centro.id;
     const id = Math.max(...this.aulas.map((o) => o.id)) + 1;
     aula.id = id;
     this.aulas.push(aula);
+    //this.agendaService.createAgendaAula(aula.id_centro, aula.id);
     return of(aula);
   }
 

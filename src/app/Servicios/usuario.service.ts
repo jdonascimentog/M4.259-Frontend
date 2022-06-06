@@ -110,6 +110,24 @@ export class UsuarioService {
     return of(usuarios);
   }
 
+  getUsuarioByLogin(login: string): Observable<UsuarioDTO> {
+    let usuario: UsuarioDTO = {
+      id: 0,
+      login: '',
+      email: '',
+      telefono: 99,
+      password: '',
+      rol: '',
+    };
+
+    if (this.usuarios.some((usu) => usu.login == login)) {
+      usuario = this.usuarios.filter((usu) => usu.login == login)[0];
+      usuario.password = '';
+    }
+
+    return of(usuario);
+  }
+
   createUsuario(usuario: UsuarioDTO): Observable<UsuarioDTO> {
     const id = Math.max(...this.usuarios.map((o) => o.id)) + 1;
     usuario.id = id;

@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CentroDTO } from 'src/app/Modelos/centro.dto';
+import { AgendaService } from 'src/app/Servicios/agenda.service';
 import { CentroService } from 'src/app/Servicios/centro.service';
 import { LocalStorageService } from 'src/app/Servicios/local-storage.service';
 
@@ -29,6 +30,7 @@ export class CentroComponent implements OnInit {
 
   constructor(
     private centroService: CentroService,
+    private agendaService: AgendaService,
     private localStorageService: LocalStorageService,
     private formBuilder: FormBuilder
   ) {
@@ -96,6 +98,7 @@ export class CentroComponent implements OnInit {
       this.centroService.createCentro(this.centro).subscribe({
         next: (centro: CentroDTO) => {
           if (centro.id) {
+            this.agendaService.createAgendaCentro(centro.id);
             this.cargarCentros();
             this.volverListado();
           }

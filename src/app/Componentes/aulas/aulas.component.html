@@ -41,7 +41,11 @@
                 />
               </td>
               <td>
-                <button class="btn btn-primary" (click)="editarAula(aula)">
+                <button
+                  class="btn btn-primary"
+                  *ngIf="isInRol('admin_centro|educador')"
+                  (click)="editarAula(aula)"
+                >
                   <i class="fa-solid fa-pen"></i></button
                 >&nbsp;&nbsp;<button
                   *ngIf="isInRol('admin_centro')"
@@ -49,6 +53,13 @@
                   (click)="eliminarAula(aula.id)"
                 >
                   <i class="fa-solid fa-trash-can"></i>
+                </button>
+                <button
+                  *ngIf="isInRol('usuario')"
+                  class="btn btn-primary"
+                  (click)="irAula(aula.id)"
+                >
+                  <i class="fa-regular fa-eye"></i>
                 </button>
               </td>
             </tr>
